@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>സ്വാതന്ത്ര്യദിനാശംസകൾ!</title>
+    <!-- Tailwind CSS CDN for modern styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Malayalam:wght@400;700&display=swap');
+        body {
+            font-family: 'Noto Sans Malayalam', sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-r from-orange-400 via-white to-green-400 min-h-screen flex items-center justify-center p-4">
+
+    <div class="bg-white p-8 md:p-12 rounded-3xl shadow-2xl max-w-lg w-full text-center space-y-6 transform transition-all duration-500 hover:scale-105">
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-800 tracking-wide animate-pulse">സ്വാതന്ത്ര്യദിനാശംസകൾ!</h1>
+        <p class="text-xl md:text-2xl font-semibold text-gray-600 mt-4">
+            ഇന്ത്യയുടെ 78-ാം സ്വാതന്ത്ര്യദിനത്തിൽ എല്ലാ പ്രിയപ്പെട്ടവർക്കും ഹൃദയം നിറഞ്ഞ ആശംസകൾ!
+        </p>
+        
+        <!-- Main dynamic content area -->
+        <div id="content-area" class="mt-6 space-y-4">
+            <!-- This area will be populated by JavaScript -->
+        </div>
+
+        <!-- Buttons and share section -->
+        <div class="mt-8 space-y-4">
+            <a id="whatsapp-share-btn" href="#" target="_blank" class="hidden w-full bg-green-500 text-white font-bold py-3 px-6 rounded-full shadow-lg hover:bg-green-600 transition duration-300 transform hover:scale-105">
+                വാട്‌സ്ആപ്പിൽ ഷെയർ ചെയ്യുക
+            </a>
+            <p id="share-link-text" class="hidden text-gray-500 text-sm mt-4">
+                (ലിങ്ക് കോപ്പി ചെയ്യാൻ ഇവിടെ ക്ലിക്ക് ചെയ്യുക)
+            </p>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const contentArea = document.getElementById('content-area');
+            const whatsappBtn = document.getElementById('whatsapp-share-btn');
+            const shareLinkText = document.getElementById('share-link-text');
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const senderName = urlParams.get('name');
+
+            // Function to generate the UI for entering a name
+            const showNameInput = () => {
+                contentArea.innerHTML = `
+                    <p class="text-lg text-gray-700">നിങ്ങളുടെ പേര് നൽകി സുഹൃത്തുക്കൾക്ക് അയക്കൂ:</p>
+                    <input type="text" id="name-input" placeholder="നിങ്ങളുടെ പേര്" class="w-full p-3 rounded-lg border-2 border-gray-300 focus:outline-none focus:border-green-500 transition-all duration-300">
+                    <button id="generate-btn" class="w-full bg-orange-500 text-white font-bold py-3 px-6 rounded-full shadow-lg hover:bg-orange-600 transition duration-300 transform hover:scale-105">
+                        ലിങ്ക് ഉണ്ടാക്കുക
+                    </button>
+                    <div id="generated-link-container" class="hidden">
+                        <p class="text-gray-700 font-semibold mt-4">നിങ്ങളുടെ ലിങ്ക്:</p>
+                        <input type="text" id="generated-link-input" readonly class="w-full p-3 rounded-lg border-2 border-gray-300 bg-gray-100 text-gray-600 overflow-x-auto select-all">
+                    </div>
+                `;
+
+                document.getElementById('generate-btn').addEventListener('click', () => {
+                    const name = document.getElementById('name-input').value.trim();
+                    if (name) {
+                        const encodedName = encodeURIComponent(name);
+                        const newUrl = `${window.location.protocol}//${window.location.host}${window.location.pathname}?name=${encodedName}`;
+                        
+                        document.getElementById('generated-link-container').classList.remove('hidden');
+                        document.getElementById('generated-link-input').value = newUrl;
+                        
+                        whatsappBtn.classList.remove('hidden');
+                        shareLinkText.classList.remove('hidden');
+
+                        const message = `സ്വാതന്ത്ര്യദിനാശംസകൾ! ❤️\nനിങ്ങൾക്കും നിങ്ങളുടെ പേരിൽ ആശംസകൾ അയക്കാം. ഈ ലിങ്കിൽ ക്ലിക്ക് ചെയ്യുക: ${newUrl}`;
+                        whatsappBtn.href = `https://wa.me/?text=${encodeURIComponent(message)}`;
+                    } else {
+                        alert("ദയവായി നിങ്ങളുടെ പേര് നൽകുക.");
+                    }
+                });
+                
+                // Copy link to clipboard on click
+                document.getElementById('generated-link-input').addEventListener('click', () => {
+                    const linkInput = document.getElementById('generated-link-input');
+                    linkInput.select();
+                    document.execCommand('copy');
+                    alert("ലിങ്ക് കോപ്പി ചെയ്തിട്ടുണ്ട്!");
+                });
+            };
+
+            // Main logic to check for a name in the URL
+            if (senderName) {
+                const decodedName = decodeURIComponent(senderName);
+                contentArea.innerHTML = `
+                    <p class="text-2xl md:text-3xl font-bold text-gray-800">സ്വാതന്ത്ര്യദിനാശംസകൾ നേരുന്നത്,</p>
+                    <p class="text-3xl md:text-4xl font-extrabold text-orange-600">${decodedName}</p>
+                    <p class="text-lg mt-4 text-gray-700">നിങ്ങൾക്കും നിങ്ങളുടെ പേരിൽ ആശംസകൾ അയക്കാം. താഴെ കാണുന്ന ബട്ടണിൽ ക്ലിക്ക് ചെയ്യുക.</p>
+                `;
+                whatsappBtn.classList.remove('hidden');
+                
+                const newUrl = `${window.location.protocol}//${window.location.host}${window.location.pathname}`;
+                const message = `സ്വാതന്ത്ര്യദിനാശംസകൾ! ❤️\nനിങ്ങൾക്കും നിങ്ങളുടെ പേരിൽ ആശംസകൾ അയക്കാം. ഈ ലിങ്കിൽ ക്ലിക്ക് ചെയ്യുക: ${newUrl}`;
+                whatsappBtn.href = `https://wa.me/?text=${encodeURIComponent(message)}`;
+            } else {
+                showNameInput();
+            }
+        });
+
+        // Custom alert function (to avoid using window.alert)
+        function alert(message) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = 'fixed top-4 left-1/2 -translate-x-1/2 bg-gray-800 text-white py-3 px-6 rounded-full shadow-lg z-50 transition-all duration-300';
+            alertDiv.innerText = message;
+            document.body.appendChild(alertDiv);
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
